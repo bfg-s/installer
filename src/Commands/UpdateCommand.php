@@ -69,6 +69,8 @@ class UpdateCommand extends Command
                     \Log::error($throwable);
                     return 1;
                 }
+
+                \Installer::buildGeneralData($package['provider'], true);
             }
 
             $this->info("The package [{$name}] successfully updated!");
