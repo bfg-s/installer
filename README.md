@@ -1,0 +1,1 @@
+# Installer PackageThe intent of the functionality is to simplify the installation process for certain packages, it also allows you to bind packages with each other by types for your application or extension.

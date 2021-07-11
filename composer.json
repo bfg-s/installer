@@ -1,0 +1,59 @@
+{
+    "name": "bfg/installer",
+    "type": "bfg-app",
+    "description": "Simplify the installation process for certain packages",
+    "keywords": [
+        "laravel",
+        "doc",
+        "block"
+    ],
+    "homepage": "https://github.com/bfg/installer",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "bfg",
+            "email": "bfg.script@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "illuminate/contracts": "^8.0",
+        "bfg/scaffold": "^1.8.2|dev-master",
+        "bfg/entity": "^1.1.9|dev-master",
+        "bfg/dev": "^1.0.8|dev-master"
+    },
+    "require-dev": {
+
+    },
+    "autoload": {
+        "psr-4": {
+            "Bfg\\Installer\\": "src"
+        },
+        "files": [
+            "helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+
+        }
+    },
+    "scripts": {
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Bfg\\Installer\\ServiceProvider"
+            ],
+            "aliases": {
+                "Installer": "Bfg\\Installer\\Facade"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
