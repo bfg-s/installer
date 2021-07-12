@@ -18,7 +18,7 @@ class Discover
      */
     public function handle(Command $command)
     {
-        foreach (\Installer::packages() as $package) {
+        foreach (array_reverse(\Installer::packages()) as $package) {
 
             /** @var InstalledProvider $provider */
             $provider = app($package['provider']);
