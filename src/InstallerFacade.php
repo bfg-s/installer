@@ -204,6 +204,13 @@ class InstallerFacade
             }
         }
 
+        if (
+            $this->packages[$provider_name]['composer_name'] &&
+            $this->packages[$provider_name]['name'] == $provider_name
+        ) {
+            $this->packages[$provider_name]['name'] = $this->packages[$provider_name]['composer_name'];
+        }
+
         return $this;
     }
 
