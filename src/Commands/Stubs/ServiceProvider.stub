@@ -1,0 +1,58 @@
+<?php
+
+namespace {NAMESPACE};
+
+use Bfg\Installer\Providers\InstalledProvider;
+
+/**
+ * Class ServiceProvider
+ * @package {NAMESPACE}
+ */
+class ServiceProvider extends InstalledProvider
+{
+    /**
+     * The version of extension.
+     * @var string|null
+     */
+    public ?string $version = "{VERSION}";
+
+    /**
+     * The name of extension.
+     * @var string|null
+     */
+    public ?string $name = "{NAME}";
+
+    /**
+     * The type to determine who
+     * owns the extension.
+     * @var string|null
+     */
+    public ?string $type = '{TYPE}';
+
+    /**
+     * The description of extension.
+     * @var string|null
+     */
+    public ?string $description = "{DESCRIPTION}";
+
+    /**
+     * Executed when the provider is registered
+     * and the extension is installed.
+     * @return void
+     */
+    public function installed(): void
+    {
+        //
+    }
+
+    /**
+     * Executed when the provider run method
+     * "boot" and the extension is installed.
+     * @return void
+     */
+    public function run(): void
+    {
+        //
+    }
+}
+

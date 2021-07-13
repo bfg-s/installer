@@ -56,7 +56,7 @@ class PackagesCommand extends Command
             $result = [
                 $i['name'],
                 $i['description'],
-                "<info>{$i['version']}</info>",
+                "<info>".($i['version'] ?: $i['composer_version'])."</info>",
                 "<comment>{$i['child']}</comment>",
                 "<comment>{$i['type']}</comment>",
                 $i['install_complete'] ? "<info>Yes</info>":"<comment>No</comment>",

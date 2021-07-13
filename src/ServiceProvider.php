@@ -4,6 +4,7 @@ namespace Bfg\Installer;
 
 use Bfg\Dev\Commands\DumpAutoload;
 use Bfg\Installer\Commands\InstallCommand;
+use Bfg\Installer\Commands\MakeCommand;
 use Bfg\Installer\Commands\PackageDiscoverCommand;
 use Bfg\Installer\Commands\PackagesCommand;
 use Bfg\Installer\Commands\ReInstallCommand;
@@ -17,12 +18,6 @@ use Bfg\Installer\Providers\InstalledProvider;
  */
 class ServiceProvider extends InstalledProvider
 {
-    /**
-     * The version of extension.
-     * @var string
-     */
-    public string $version = "0.0.1";
-
     /**
      * The name of extension.
      * @var string|null
@@ -94,6 +89,7 @@ class ServiceProvider extends InstalledProvider
             UpdateCommand::class,
             PackagesCommand::class,
             ReInstallCommand::class,
+            MakeCommand::class,
         ]);
 
         parent::boot();

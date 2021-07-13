@@ -15,7 +15,7 @@ class InstallerFacade
      *  'install_complete' => bool,
      *  'name' => string,
      *  'logo' => string|null,
-     *  'version' => string,
+     *  'version' => string|null,
      *  'type' => string|null,
      *  'description' => string|null,
      *  'child' => string|null,
@@ -65,13 +65,17 @@ class InstallerFacade
     public function registrationPackage(string $providerPackageClass, array $settings = []): static
     {
         if (!$this->isHasPackage($providerPackageClass)) {
+            if (isset($settings['installed'])) {
+
+                $settings['install_complete'] = $settings['installed'];
+            }
             $this->packages[$providerPackageClass] = array_merge([
                 'installed' => false,
                 'install_complete' => false,
                 'name' => $providerPackageClass,
                 'logo' => null,
                 'provider' => $providerPackageClass,
-                'version' => '0.0.1',
+                'version' => null,
                 'child' => null,
                 'type' => null,
                 'parent' => null,
@@ -83,9 +87,19 @@ class InstallerFacade
                 'description' => null,
                 'extensions' => [],
             ], $settings);
+
+            $this->updatePackagesExtensions();
+
+            $this->buildGeneralData($providerPackageClass, false);
         }
 
-        if (\App::isLocal() || !is_file(config('installer.map_cache'))) {
+        else if (\App::isLocal() || !is_file(config('installer.map_cache'))) {
+
+            if (isset($settings['installed'])) {
+
+                unset($settings['installed']);
+            }
+
             if ($this->isHasPackage($providerPackageClass)) {
                 $this->packages[$providerPackageClass] = array_merge(
                     $this->packages[$providerPackageClass],
