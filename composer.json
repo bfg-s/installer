@@ -18,9 +18,7 @@
     "require": {
         "php": "^8.0",
         "illuminate/contracts": "^8.0",
-        "bfg/scaffold": "^1.8.2|dev-master",
-        "bfg/entity": "^1.1.9|dev-master",
-        "bfg/dev": "^1.0.8|dev-master"
+        "bfg/entity": "*"
     },
     "require-dev": {
 
