@@ -349,4 +349,13 @@ class InstallerFacade
             array_entity($this->packages)->wrap('php', 'return')->render()
         );
     }
+
+    /**
+     * Get collection of the packages
+     * @return \Illuminate\Support\Collection
+     */
+    public function collect(): \Illuminate\Support\Collection
+    {
+        return collect($this->packages);
+    }
 }

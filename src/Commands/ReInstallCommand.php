@@ -46,6 +46,14 @@ class ReInstallCommand extends Command
     {
         $name = $this->argument('package') ?? 'app';
 
+        if (!\Installer::isHasPackageByName($name)) {
+
+            if ($index = \Installer::collect()->where('index', $name)->first()) {
+
+                $name = $index['name'];
+            }
+        }
+
         if (\Installer::isHasPackageByName($name)) {
 
             $this->call('uninstall', ['package' => $name, '--force' => true]);

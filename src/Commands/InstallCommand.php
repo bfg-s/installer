@@ -17,7 +17,7 @@ class InstallCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'install {package? : The package name}
+    protected $signature = 'install {package? : The package name or index}
                             {--u|update : Update the package after install}
                             {--r|reinstall : Reinstall the package after install or update}';
 
@@ -46,6 +46,14 @@ class InstallCommand extends Command
     public function handle()
     {
         $name = $this->argument('package') ?? 'app';
+
+        if (!\Installer::isHasPackageByName($name)) {
+
+            if ($index = \Installer::collect()->where('index', $name)->first()) {
+
+                $name = $index['name'];
+            }
+        }
 
         if (\Installer::isHasPackageByName($name)) {
 

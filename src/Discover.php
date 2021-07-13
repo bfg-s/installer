@@ -24,7 +24,8 @@ class Discover
             $provider = app($package['provider']);
 
             if (
-                $provider instanceof InstalledProvider
+                $provider instanceof InstalledProvider &&
+                \Installer::isInstalledPackage($package['provider'])
             ) {
                 try {
                     $provider->dump(

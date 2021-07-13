@@ -42,10 +42,19 @@ class UpdateCommand extends Command
      * Execute the console command.
      *
      * @return int
+     * @throws \ReflectionException
      */
     public function handle()
     {
         $name = $this->argument('package') ?? 'app';
+
+        if (!\Installer::isHasPackageByName($name)) {
+
+            if ($index = \Installer::collect()->where('index', $name)->first()) {
+
+                $name = $index['name'];
+            }
+        }
 
         if (\Installer::isHasPackageByName($name)) {
 

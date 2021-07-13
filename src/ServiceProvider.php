@@ -45,6 +45,12 @@ class ServiceProvider extends InstalledProvider
     public ?string $description = 'The main application';
 
     /**
+     * Set as installed by default.
+     * @var bool
+     */
+    public bool $installed = true;
+
+    /**
      * Executed when the provider is registered
      * and the extension is installed.
      * @return void
