@@ -69,7 +69,11 @@ class InstallerFacade
 
                 $settings['install_complete'] = $settings['installed'];
             }
+
+            $index = count($this->packages);
+
             $this->packages[$providerPackageClass] = array_merge([
+                'index' => $index,
                 'installed' => false,
                 'install_complete' => false,
                 'name' => $providerPackageClass,

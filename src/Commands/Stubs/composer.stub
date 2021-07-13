@@ -16,10 +16,10 @@
     "require-dev": {},
     "autoload": {
         "psr-4": {
-            "{COMPOSER_NAMESPACE}\\": "app/"
+            "{COMPOSER_NAMESPACE}\\": "src/"
         },
         "files": [
-            "app/helpers.php"
+            "src/helpers.php"
         ]
     },
     "extra": {

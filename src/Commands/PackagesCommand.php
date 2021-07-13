@@ -16,7 +16,9 @@ class PackagesCommand extends Command
      * @var string
      */
     protected $signature = 'packages
-        {--p|path : Show path provider of extension}';
+        {--p|path : Show path provider of extensions}
+        {--c|child : Show child name of extensions}
+        {--t|type : Show type of extensions}';
 
     /**
      * The console command description.
@@ -43,8 +45,18 @@ class PackagesCommand extends Command
     public function handle()
     {
         $headers = [
-            "Name", "Description", "Version", "Child", "Type", "Installed", "Works"
+            "Index", "Name", "Description", "Version", "Installed", "Works"
         ];
+
+        if ($this->option('child')) {
+
+            $headers[] = "Child";
+        }
+
+        if ($this->option('type')) {
+
+            $headers[] = "Type";
+        }
 
         if ($this->option('path')) {
 
@@ -54,14 +66,23 @@ class PackagesCommand extends Command
         $this->table($headers, collect(\Installer::packages())->map(function ($i, $class) {
 
             $result = [
+                $i['index'],
                 $i['name'],
                 $i['description'],
                 "<info>".($i['version'] ?: $i['composer_version'])."</info>",
-                "<comment>{$i['child']}</comment>",
-                "<comment>{$i['type']}</comment>",
                 $i['install_complete'] ? "<info>Yes</info>":"<comment>No</comment>",
                 $this->installedInformation($class, $i),
             ];
+
+            if ($this->option('child')) {
+
+                $result[] = $i['child'];
+            }
+
+            if ($this->option('type')) {
+
+                $result[] = $i['type'];
+            }
 
             if ($this->option('path')) {
 
