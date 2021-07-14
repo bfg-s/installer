@@ -19,12 +19,6 @@ use Bfg\Installer\Providers\InstalledProvider;
 class ServiceProvider extends InstalledProvider
 {
     /**
-     * The name of extension.
-     * @var string|null
-     */
-    public ?string $name = 'app';
-
-    /**
      * The child type for sub
      * extensions of extension.
      * @var string|null
