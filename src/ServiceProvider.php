@@ -104,4 +104,14 @@ class ServiceProvider extends InstalledProvider
             });
         }
     }
+
+    /**
+     * Executed when the provider run method
+     * "boot" and the extension is installed.
+     * @return void
+     */
+    function run(): void
+    {
+        //
+    }
 }
