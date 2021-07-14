@@ -71,16 +71,6 @@ class ServiceProvider extends InstalledProvider
     }
 
     /**
-     * Executed when the provider run method
-     * "boot" and the extension is installed.
-     * @return void
-     */
-    function run(): void
-    {
-        DumpAutoload::addToExecute(Discover::class);
-    }
-
-    /**
      * Bootstrap services.
      * @return void
      */
