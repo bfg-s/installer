@@ -73,6 +73,18 @@ class UpdateCommand extends Command
                             'extension' => $package
                         ])
                     );
+                    foreach ($package['extensions'] as $extension) {
+
+                        $name = \Installer::getPackage($extension, 'name');
+
+                        if ($name) {
+
+                            $this->call(static::class, [
+                                'package' => $name,
+                                '--reinstall' => !!$this->option('reinstall')
+                            ]);
+                        }
+                    }
                 } catch (\Throwable $throwable) {
                     $this->error("PHP Exception [{$throwable->getMessage()}]: {$throwable->getCode()}");
                     \Log::error($throwable);

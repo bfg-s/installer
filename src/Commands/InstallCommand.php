@@ -18,8 +18,7 @@ class InstallCommand extends Command
      * @var string
      */
     protected $signature = 'install {package? : The package name or index}
-                            {--u|update : Update the package after install}
-                            {--r|reinstall : Reinstall the package after install or update}';
+                            {--u|update : Update the package after install}';
 
     /**
      * The console command description.
@@ -81,6 +80,19 @@ class InstallCommand extends Command
                                 'extension' => $package
                             ])
                         );
+
+                        foreach ($package['extensions'] as $extension) {
+
+                            $name = \Installer::getPackage($extension, 'name');
+
+                            if ($name) {
+
+                                $this->call(static::class, [
+                                    'package' => $name,
+                                    '--update' => !!$this->option('update')
+                                ]);
+                            }
+                        }
                     } catch (\Throwable $throwable) {
                         $this->error("PHP Exception [{$throwable->getMessage()}]: {$throwable->getCode()}");
                         \Log::error($throwable);
@@ -96,13 +108,6 @@ class InstallCommand extends Command
                 if ($this->option('update')) {
 
                     $this->call('update', [
-                        'package' => $name
-                    ]);
-                }
-
-                if ($this->option('reinstall')) {
-
-                    $this->call('reinstall', [
                         'package' => $name
                     ]);
                 }

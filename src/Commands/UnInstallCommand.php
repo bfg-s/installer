@@ -79,6 +79,19 @@ class UnInstallCommand extends Command
                                 'extension' => $package
                             ])
                         );
+
+                        foreach ($package['extensions'] as $extension) {
+
+                            $name = \Installer::getPackage($extension, 'name');
+
+                            if ($name) {
+
+                                $this->call(static::class, [
+                                    'package' => $name,
+                                    '--force' => !!$this->option('force')
+                                ]);
+                            }
+                        }
                     } catch (\Throwable $throwable) {
                         $this->error("PHP Exception [{$throwable->getMessage()}]: {$throwable->getCode()}");
                         \Log::error($throwable);

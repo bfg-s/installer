@@ -2,7 +2,6 @@
 
 namespace Bfg\Installer;
 
-use Bfg\Dev\Commands\DumpAutoload;
 use Bfg\Installer\Commands\InstallCommand;
 use Bfg\Installer\Commands\MakeCommand;
 use Bfg\Installer\Commands\PackageDiscoverCommand;
