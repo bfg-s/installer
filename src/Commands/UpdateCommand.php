@@ -75,12 +75,12 @@ class UpdateCommand extends Command
                     );
                     foreach ($package['extensions'] as $extension) {
 
-                        $name = \Installer::getPackage($extension, 'name');
+                        $name_p = \Installer::getPackage($extension, 'name');
 
-                        if ($name) {
+                        if ($name_p) {
 
                             $this->call(static::class, [
-                                'package' => $name,
+                                'package' => $name_p,
                                 '--reinstall' => !!$this->option('reinstall')
                             ]);
                         }
