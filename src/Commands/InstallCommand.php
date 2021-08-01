@@ -10,8 +10,10 @@ use Illuminate\Console\Command;
  * Class InstallCommand
  * @package Bfg\Installer\Commands
  */
-class InstallCommand extends Command
+class InstallCommand extends ProcessCommand
 {
+    public $is_install = true;
+
     /**
      * The name and signature of the console command.
      *

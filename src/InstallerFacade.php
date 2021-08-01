@@ -201,6 +201,14 @@ class InstallerFacade
 
                     $this->packages[$provider_name]['composer_version'] = $data['version'];
                 }
+
+                if (
+                    $data && isset($data['description']) &&
+                    !$this->packages[$provider_name]['description']
+                ) {
+
+                    $this->packages[$provider_name]['description'] = $data['description'];
+                }
             }
         }
 
@@ -310,6 +318,18 @@ class InstallerFacade
         }
 
         return $result;
+    }
+
+    /**
+     * Get extensions of package
+     * @param  string  $provider_name
+     * @return array
+     */
+    public function getExtensions(string $provider_name): array
+    {
+        return $this->isHasPackage($provider_name) ? collect($this->packages())->only(
+            $this->getPackage($provider_name, 'extensions')
+        )->toArray() : [];
     }
 
     /**

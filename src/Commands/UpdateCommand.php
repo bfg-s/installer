@@ -11,8 +11,10 @@ use Illuminate\Console\Command;
  * Class UpdateCommand
  * @package Bfg\Installer\Commands
  */
-class UpdateCommand extends Command
+class UpdateCommand extends ProcessCommand
 {
+    public $is_update = true;
+
     /**
      * The name and signature of the console command.
      *

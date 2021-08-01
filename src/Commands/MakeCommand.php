@@ -17,9 +17,9 @@ class MakeCommand extends Command
      * @var string
      */
     protected $signature = 'make {name : The making package name}
+                                {--d|description= : The description of extension}
+                                {--t|type=bfg-app : The type of extension}
                                 {--namespace= : The namespace of extension}
-                                {--description= : The description of extension}
-                                {--type=bfg-app : The type of extension}
                                 {--ver=0.0.1 : The version of extension}';
 
     /**

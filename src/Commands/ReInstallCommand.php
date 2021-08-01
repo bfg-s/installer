@@ -11,8 +11,10 @@ use Illuminate\Console\Command;
  * Class ReInstallCommand
  * @package Bfg\Installer\Commands
  */
-class ReInstallCommand extends Command
+class ReInstallCommand extends ProcessCommand
 {
+    public $is_reinstall = true;
+
     /**
      * The name and signature of the console command.
      *

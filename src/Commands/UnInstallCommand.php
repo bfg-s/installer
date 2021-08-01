@@ -11,8 +11,10 @@ use Illuminate\Console\Command;
  * Class UnInstallCommand
  * @package Bfg\Installer\Commands
  */
-class UnInstallCommand extends Command
+class UnInstallCommand extends ProcessCommand
 {
+    public $is_uninstall = true;
+
     /**
      * The name and signature of the console command.
      *
