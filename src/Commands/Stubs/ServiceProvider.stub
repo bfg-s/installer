@@ -30,12 +30,6 @@ class ServiceProvider extends InstalledProvider
     public ?string $type = '{TYPE}';
 
     /**
-     * The description of extension.
-     * @var string|null
-     */
-    public ?string $description = "{DESCRIPTION}";
-
-    /**
      * Set as installed by default.
      * @var bool
      */
