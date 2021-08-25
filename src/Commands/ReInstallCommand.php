@@ -46,7 +46,7 @@ class ReInstallCommand extends ProcessCommand
      */
     public function handle()
     {
-        $name = $this->argument('package') ?? 'app';
+        $name = $this->argument('package') ?? 'bfg/installer';
 
         if (!\Installer::isHasPackageByName($name)) {
 

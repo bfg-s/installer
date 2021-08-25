@@ -2,6 +2,7 @@
 
 namespace Bfg\Installer;
 
+use Bfg\Installer\Commands\DumpCommand;
 use Bfg\Installer\Commands\InstallCommand;
 use Bfg\Installer\Commands\MakeCommand;
 use Bfg\Installer\Commands\PackageDiscoverCommand;
@@ -73,6 +74,7 @@ class ServiceProvider extends InstalledProvider
             PackagesCommand::class,
             ReInstallCommand::class,
             MakeCommand::class,
+            DumpCommand::class
         ]);
 
         parent::boot();

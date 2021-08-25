@@ -2,16 +2,17 @@
 
 namespace Bfg\Installer\Commands;
 
+use Bfg\Installer\Processor\DumpAutoloadProcessor;
 use Bfg\Installer\Processor\UnInstallProcessor;
 use Bfg\Installer\Processor\UpdateProcessor;
 use Bfg\Installer\Providers\InstalledProvider;
 use Illuminate\Console\Command;
 
 /**
- * Class UpdateCommand
+ * Class DumpCommand
  * @package Bfg\Installer\Commands
  */
-class UpdateCommand extends ProcessCommand
+class DumpCommand extends ProcessCommand
 {
     public $is_update = true;
 
@@ -20,8 +21,7 @@ class UpdateCommand extends ProcessCommand
      *
      * @var string
      */
-    protected $signature = 'update {package? : The package name}
-                            {--r|reinstall : Reinstall the package after update}';
+    protected $signature = 'dump-autoload {package? : The package name}';
 
     /**
      * The console command description.
@@ -69,8 +69,8 @@ class UpdateCommand extends ProcessCommand
                 $provider instanceof InstalledProvider
             ) {
                 try {
-                    $provider->update(
-                        app(UpdateProcessor::class, [
+                    $provider->dump(
+                        app(DumpAutoloadProcessor::class, [
                             'command' => $this,
                             'extension' => $package
                         ])
@@ -82,8 +82,7 @@ class UpdateCommand extends ProcessCommand
                         if ($name_p) {
 
                             $this->call(static::class, [
-                                'package' => $name_p,
-                                '--reinstall' => !!$this->option('reinstall')
+                                'package' => $name_p
                             ]);
                         }
                     }
@@ -96,14 +95,7 @@ class UpdateCommand extends ProcessCommand
                 \Installer::buildGeneralData($package['provider'], true);
             }
 
-            $this->info("The package [{$name}] successfully updated!");
-
-            if ($this->option('reinstall')) {
-
-                $this->call('reinstall', [
-                    'package' => $name
-                ]);
-            }
+            $this->info("The package [{$name}] successfully dumped!");
 
         } else {
 
