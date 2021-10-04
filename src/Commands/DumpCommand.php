@@ -9,7 +9,7 @@ use Bfg\Installer\Providers\InstalledProvider;
 use Illuminate\Console\Command;
 
 /**
- * Class DumpCommand
+ * Class DumpCommand.
  * @package Bfg\Installer\Commands
  */
 class DumpCommand extends ProcessCommand
@@ -21,7 +21,7 @@ class DumpCommand extends ProcessCommand
      *
      * @var string
      */
-    protected $signature = 'dump-autoload {package? : The package name}';
+    protected $signature = 'dump {package? : The package name}';
 
     /**
      * The console command description.
@@ -50,16 +50,13 @@ class DumpCommand extends ProcessCommand
     {
         $name = $this->argument('package') ?? 'bfg/installer';
 
-        if (!\Installer::isHasPackageByName($name)) {
-
+        if (! \Installer::isHasPackageByName($name)) {
             if ($index = \Installer::collect()->where('index', $name)->first()) {
-
                 $name = $index['name'];
             }
         }
 
         if (\Installer::isHasPackageByName($name)) {
-
             $package = \Installer::getPackageByName($name);
 
             /** @var InstalledProvider $provider */
@@ -72,23 +69,22 @@ class DumpCommand extends ProcessCommand
                     $provider->dump(
                         app(DumpAutoloadProcessor::class, [
                             'command' => $this,
-                            'extension' => $package
+                            'extension' => $package,
                         ])
                     );
                     foreach ($package['extensions'] as $extension) {
-
                         $name_p = \Installer::getPackage($extension, 'name');
 
                         if ($name_p) {
-
                             $this->call(static::class, [
-                                'package' => $name_p
+                                'package' => $name_p,
                             ]);
                         }
                     }
                 } catch (\Throwable $throwable) {
                     $this->error("PHP Exception [{$throwable->getMessage()}]: {$throwable->getCode()}");
                     \Log::error($throwable);
+
                     return 1;
                 }
 
@@ -96,9 +92,7 @@ class DumpCommand extends ProcessCommand
             }
 
             $this->info("The package [{$name}] successfully dumped!");
-
         } else {
-
             $this->error("Package [{$name}] is not found!");
         }
 

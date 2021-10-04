@@ -13,7 +13,7 @@ use Bfg\Installer\Commands\UpdateCommand;
 use Bfg\Installer\Providers\InstalledProvider;
 
 /**
- * Class ServiceProvider
+ * Class ServiceProvider.
  * @package Bfg\Doc
  */
 class ServiceProvider extends InstalledProvider
@@ -43,15 +43,15 @@ class ServiceProvider extends InstalledProvider
      * and the extension is installed.
      * @return void
      */
-    function installed(): void
+    public function installed(): void
     {
         /**
-         * Register shutdown
+         * Register shutdown.
          */
         $this->registerShutDown();
 
         /**
-         * Extend default laravel discover command
+         * Extend default laravel discover command.
          */
         $this->app->extend('command.package.discover', function () {
             return new PackageDiscoverCommand();
@@ -65,7 +65,7 @@ class ServiceProvider extends InstalledProvider
     public function boot()
     {
         /**
-         * Register package commands
+         * Register package commands.
          */
         $this->commands([
             InstallCommand::class,
@@ -74,21 +74,19 @@ class ServiceProvider extends InstalledProvider
             PackagesCommand::class,
             ReInstallCommand::class,
             MakeCommand::class,
-            DumpCommand::class
+            DumpCommand::class,
         ]);
 
         parent::boot();
     }
 
     /**
-     * Register shutdown function for development dump
+     * Register shutdown function for development dump.
      */
     protected function registerShutDown()
     {
         if (\App::isLocal()) {
-
             register_shutdown_function(function () {
-
                 \Installer::dump();
             });
         }
@@ -99,7 +97,7 @@ class ServiceProvider extends InstalledProvider
      * "boot" and the extension is installed.
      * @return void
      */
-    function run(): void
+    public function run(): void
     {
         //
     }

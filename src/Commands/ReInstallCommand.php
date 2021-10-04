@@ -8,7 +8,7 @@ use Bfg\Installer\Providers\InstalledProvider;
 use Illuminate\Console\Command;
 
 /**
- * Class ReInstallCommand
+ * Class ReInstallCommand.
  * @package Bfg\Installer\Commands
  */
 class ReInstallCommand extends ProcessCommand
@@ -48,21 +48,16 @@ class ReInstallCommand extends ProcessCommand
     {
         $name = $this->argument('package') ?? 'bfg/installer';
 
-        if (!\Installer::isHasPackageByName($name)) {
-
+        if (! \Installer::isHasPackageByName($name)) {
             if ($index = \Installer::collect()->where('index', $name)->first()) {
-
                 $name = $index['name'];
             }
         }
 
         if (\Installer::isHasPackageByName($name)) {
-
             $this->call('uninstall', ['package' => $name, '--force' => true]);
             $this->call('install', ['package' => $name]);
-
         } else {
-
             $this->error("Package [{$name}] is not found!");
         }
 

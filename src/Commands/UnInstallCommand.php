@@ -8,7 +8,7 @@ use Bfg\Installer\Providers\InstalledProvider;
 use Illuminate\Console\Command;
 
 /**
- * Class UnInstallCommand
+ * Class UnInstallCommand.
  * @package Bfg\Installer\Commands
  */
 class UnInstallCommand extends ProcessCommand
@@ -49,16 +49,13 @@ class UnInstallCommand extends ProcessCommand
     {
         $name = $this->argument('package') ?? 'bfg/installer';
 
-        if (!\Installer::isHasPackageByName($name)) {
-
+        if (! \Installer::isHasPackageByName($name)) {
             if ($index = \Installer::collect()->where('index', $name)->first()) {
-
                 $name = $index['name'];
             }
         }
 
         if (\Installer::isHasPackageByName($name)) {
-
             $package = \Installer::getPackageByName($name);
 
             if (
@@ -78,25 +75,24 @@ class UnInstallCommand extends ProcessCommand
                         $provider->uninstall(
                             app(UnInstallProcessor::class, [
                                 'command' => $this,
-                                'extension' => $package
+                                'extension' => $package,
                             ])
                         );
 
                         foreach ($package['extensions'] as $extension) {
-
                             $name_p = \Installer::getPackage($extension, 'name');
 
                             if ($name_p) {
-
                                 $this->call(static::class, [
                                     'package' => $name_p,
-                                    '--force' => !!$this->option('force')
+                                    '--force' => (bool) $this->option('force'),
                                 ]);
                             }
                         }
                     } catch (\Throwable $throwable) {
                         $this->error("PHP Exception [{$throwable->getMessage()}]: {$throwable->getCode()}");
                         \Log::error($throwable);
+
                         return 1;
                     }
 
@@ -108,13 +104,10 @@ class UnInstallCommand extends ProcessCommand
                     ->dump();
 
                 $this->info("The package [{$name}] successfully uninstalled!");
-
             } else {
                 $this->error("The package [{$name}] already uninstalled!");
             }
-
         } else {
-
             $this->error("Package [{$name}] is not found!");
         }
 

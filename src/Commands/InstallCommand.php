@@ -7,7 +7,7 @@ use Bfg\Installer\Providers\InstalledProvider;
 use Illuminate\Console\Command;
 
 /**
- * Class InstallCommand
+ * Class InstallCommand.
  * @package Bfg\Installer\Commands
  */
 class InstallCommand extends ProcessCommand
@@ -48,23 +48,19 @@ class InstallCommand extends ProcessCommand
     {
         $name = $this->argument('package') ?? 'bfg/installer';
 
-        if (!\Installer::isHasPackageByName($name)) {
-
+        if (! \Installer::isHasPackageByName($name)) {
             if ($index = \Installer::collect()->where('index', $name)->first()) {
-
                 $name = $index['name'];
             }
         }
 
         if (\Installer::isHasPackageByName($name)) {
-
             $package = \Installer::getPackageByName($name);
 
             if (
-                !\Installer::isInstalledPackage($package['provider']) &&
-                !\Installer::isPausedPackage($package['provider'])
+                ! \Installer::isInstalledPackage($package['provider']) &&
+                ! \Installer::isPausedPackage($package['provider'])
             ) {
-
                 \Installer::set($package['provider'], 'installed', true)
                     ->dump();
 
@@ -72,32 +68,31 @@ class InstallCommand extends ProcessCommand
                 $provider = app($package['provider']);
 
                 if (
-                    !$package['install_complete'] &&
+                    ! $package['install_complete'] &&
                     $provider instanceof InstalledProvider
                 ) {
                     try {
                         $provider->install(
                             app(InstallProcessor::class, [
                                 'command' => $this,
-                                'extension' => $package
+                                'extension' => $package,
                             ])
                         );
 
                         foreach ($package['extensions'] as $extension) {
-
                             $name_p = \Installer::getPackage($extension, 'name');
 
                             if ($name_p) {
-
                                 $this->call(static::class, [
                                     'package' => $name_p,
-                                    '--update' => !!$this->option('update')
+                                    '--update' => (bool) $this->option('update'),
                                 ]);
                             }
                         }
                     } catch (\Throwable $throwable) {
                         $this->error("PHP Exception [{$throwable->getMessage()}]: {$throwable->getCode()}");
                         \Log::error($throwable);
+
                         return 1;
                     }
                 }
@@ -108,18 +103,14 @@ class InstallCommand extends ProcessCommand
                 $this->info("The package [{$name}] successfully installed!");
 
                 if ($this->option('update')) {
-
                     $this->call('update', [
-                        'package' => $name
+                        'package' => $name,
                     ]);
                 }
-
             } else {
                 $this->error("The package [{$name}] already installed!");
             }
-
         } else {
-
             $this->error("Package [{$name}] is not found!");
         }
 

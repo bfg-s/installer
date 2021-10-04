@@ -8,7 +8,7 @@ use Bfg\Installer\Providers\InstalledProvider;
 use Illuminate\Console\Command;
 
 /**
- * Class UpdateCommand
+ * Class UpdateCommand.
  * @package Bfg\Installer\Commands
  */
 class UpdateCommand extends ProcessCommand
@@ -50,16 +50,13 @@ class UpdateCommand extends ProcessCommand
     {
         $name = $this->argument('package') ?? 'bfg/installer';
 
-        if (!\Installer::isHasPackageByName($name)) {
-
+        if (! \Installer::isHasPackageByName($name)) {
             if ($index = \Installer::collect()->where('index', $name)->first()) {
-
                 $name = $index['name'];
             }
         }
 
         if (\Installer::isHasPackageByName($name)) {
-
             $package = \Installer::getPackageByName($name);
 
             /** @var InstalledProvider $provider */
@@ -72,24 +69,23 @@ class UpdateCommand extends ProcessCommand
                     $provider->update(
                         app(UpdateProcessor::class, [
                             'command' => $this,
-                            'extension' => $package
+                            'extension' => $package,
                         ])
                     );
                     foreach ($package['extensions'] as $extension) {
-
                         $name_p = \Installer::getPackage($extension, 'name');
 
                         if ($name_p) {
-
                             $this->call(static::class, [
                                 'package' => $name_p,
-                                '--reinstall' => !!$this->option('reinstall')
+                                '--reinstall' => (bool) $this->option('reinstall'),
                             ]);
                         }
                     }
                 } catch (\Throwable $throwable) {
                     $this->error("PHP Exception [{$throwable->getMessage()}]: {$throwable->getCode()}");
                     \Log::error($throwable);
+
                     return 1;
                 }
 
@@ -99,14 +95,11 @@ class UpdateCommand extends ProcessCommand
             $this->info("The package [{$name}] successfully updated!");
 
             if ($this->option('reinstall')) {
-
                 $this->call('reinstall', [
-                    'package' => $name
+                    'package' => $name,
                 ]);
             }
-
         } else {
-
             $this->error("Package [{$name}] is not found!");
         }
 

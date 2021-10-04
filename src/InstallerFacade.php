@@ -3,7 +3,7 @@
 namespace Bfg\Installer;
 
 /**
- * Class InstallerFacade
+ * Class InstallerFacade.
  * @package Bfg\Installer
  */
 class InstallerFacade
@@ -26,7 +26,7 @@ class InstallerFacade
      *  'composer_name' => string|null,
      *  'composer_version' => string|null,
      *  'extensions' => array,
-     * ]
+     * ].
      *
      * @var array|null
      */
@@ -38,7 +38,7 @@ class InstallerFacade
     public function __construct()
     {
         if ($this->packages === null) {
-            $file = storage_path("packages.php");
+            $file = storage_path('packages.php');
             if (is_file($file)) {
                 $this->packages = include $file;
             } else {
@@ -48,7 +48,7 @@ class InstallerFacade
     }
 
     /**
-     * Get all packages
+     * Get all packages.
      * @return array|null
      */
     public function packages(): ?array
@@ -64,9 +64,8 @@ class InstallerFacade
      */
     public function registrationPackage(string $providerPackageClass, array $settings = []): static
     {
-        if (!$this->isHasPackage($providerPackageClass)) {
+        if (! $this->isHasPackage($providerPackageClass)) {
             if (isset($settings['installed'])) {
-
                 $settings['install_complete'] = $settings['installed'];
             }
 
@@ -95,12 +94,8 @@ class InstallerFacade
             $this->updatePackagesExtensions();
 
             $this->buildGeneralData($providerPackageClass, false);
-        }
-
-        else if (\App::isLocal() || !is_file(config('installer.map_cache'))) {
-
+        } elseif (\App::isLocal() || ! is_file(config('installer.map_cache'))) {
             if (isset($settings['installed'])) {
-
                 unset($settings['installed']);
             }
 
@@ -127,7 +122,7 @@ class InstallerFacade
      */
     public function buildGeneralData(string $provider_name, bool $force = true): static
     {
-        if (!$this->packages[$provider_name]['path'] || $force) {
+        if (! $this->packages[$provider_name]['path'] || $force) {
             $ref = new \ReflectionClass($provider_name);
             $this->packages[$provider_name]['path'] =
                 trim(str_replace(base_path(), '', $ref->getFileName()), '/\\');
@@ -135,36 +130,32 @@ class InstallerFacade
 
         if (
             $this->packages[$provider_name]['path'] &&
-            (!$this->packages[$provider_name]['dir'] || $force)
+            (! $this->packages[$provider_name]['dir'] || $force)
         ) {
             $this->packages[$provider_name]['dir'] =
-                trim(str_replace(basename($this->packages[$provider_name]['path']), "",
+                trim(str_replace(basename($this->packages[$provider_name]['path']), '',
                     str_replace(base_path(), '', $this->packages[$provider_name]['path'])), '/\\');
         }
 
         if (
             $this->packages[$provider_name]['dir'] &&
             $this->packages[$provider_name]['path'] &&
-            (!$this->packages[$provider_name]['composer_file'] || $force)
+            (! $this->packages[$provider_name]['composer_file'] || $force)
         ) {
             $funded = [];
 
             foreach (explode(DIRECTORY_SEPARATOR, $this->packages[$provider_name]['dir']) as $segment) {
-
                 if ($segment == 'app') {
-
-                    $fp = "composer.json";
+                    $fp = 'composer.json';
                 } else {
-
                     $funded[] = $segment;
 
                     $p = implode(DIRECTORY_SEPARATOR, $funded);
 
-                    $fp = $p . DIRECTORY_SEPARATOR . "composer.json";
+                    $fp = $p.DIRECTORY_SEPARATOR.'composer.json';
                 }
 
                 if (is_file(base_path($fp))) {
-
                     $this->packages[$provider_name]['composer_file'] = $fp;
 
                     break;
@@ -176,7 +167,7 @@ class InstallerFacade
             $this->packages[$provider_name]['dir'] &&
             $this->packages[$provider_name]['path'] &&
             $this->packages[$provider_name]['composer_file'] &&
-            (!$this->packages[$provider_name]['composer_name'] || $force)
+            (! $this->packages[$provider_name]['composer_name'] || $force)
         ) {
             $data = json_decode(file_get_contents($this->packages[$provider_name]['composer_file']), 1);
 
@@ -188,25 +179,22 @@ class InstallerFacade
             $this->packages[$provider_name]['path'] &&
             $this->packages[$provider_name]['composer_file'] &&
             $this->packages[$provider_name]['composer_name'] &&
-            (!$this->packages[$provider_name]['composer_version'] || $force) &&
+            (! $this->packages[$provider_name]['composer_version'] || $force) &&
             is_file(base_path('composer.lock'))
         ) {
             $data = json_decode(file_get_contents(base_path('composer.lock')), 1);
 
             if ($data && isset($data['packages'])) {
-
                 $data = collect($data['packages'])->where('name', $this->packages[$provider_name]['composer_name'])->first();
 
                 if ($data && isset($data['version'])) {
-
                     $this->packages[$provider_name]['composer_version'] = $data['version'];
                 }
 
                 if (
                     $data && isset($data['description']) &&
-                    !$this->packages[$provider_name]['description']
+                    ! $this->packages[$provider_name]['description']
                 ) {
-
                     $this->packages[$provider_name]['description'] = $data['description'];
                 }
             }
@@ -223,7 +211,7 @@ class InstallerFacade
     }
 
     /**
-     * Set package property data
+     * Set package property data.
      *
      * @param  string  $provider_name
      * @param  string  $parameter
@@ -264,7 +252,7 @@ class InstallerFacade
     {
         $test = $this->isHasPackage($provider_name) && $this->packages[$provider_name]['installed'];
 
-        if ($test && !$this->isInstalledPackage($provider_name)) {
+        if ($test && ! $this->isInstalledPackage($provider_name)) {
             return true;
         }
 
@@ -286,7 +274,7 @@ class InstallerFacade
      */
     public function isHasPackageByName(string $name): bool
     {
-        return !!$this->getPackageByName($name);
+        return (bool) $this->getPackageByName($name);
     }
 
     /**
@@ -299,7 +287,7 @@ class InstallerFacade
     }
 
     /**
-     * Get package or package data
+     * Get package or package data.
      * @param  string  $provider_name
      * @param  string|null  $property_name
      * @param  mixed|null  $default
@@ -321,7 +309,7 @@ class InstallerFacade
     }
 
     /**
-     * Get extensions of package
+     * Get extensions of package.
      * @param  string  $provider_name
      * @return array
      */
@@ -333,7 +321,7 @@ class InstallerFacade
     }
 
     /**
-     * Update package extensions
+     * Update package extensions.
      * @param  string  $provider_name
      */
     public function updatePackageExtensions(string $provider_name)
@@ -355,7 +343,7 @@ class InstallerFacade
     }
 
     /**
-     * Update packages extensions
+     * Update packages extensions.
      */
     public function updatePackagesExtensions()
     {
@@ -367,18 +355,18 @@ class InstallerFacade
     }
 
     /**
-     * Dump all packages data
+     * Dump all packages data.
      */
     public function dump(): bool
     {
-        return !!file_put_contents(
-            storage_path("packages.php"),
+        return (bool) file_put_contents(
+            storage_path('packages.php'),
             array_entity($this->packages)->wrap('php', 'return')->render()
         );
     }
 
     /**
-     * Get collection of the packages
+     * Get collection of the packages.
      * @return \Illuminate\Support\Collection
      */
     public function collect(): \Illuminate\Support\Collection

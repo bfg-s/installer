@@ -6,7 +6,7 @@ use Composer\Json\JsonFormatter;
 use Illuminate\Console\Command;
 
 /**
- * Class MakeCommand
+ * Class MakeCommand.
  * @package Bfg\Installer\Commands
  */
 class MakeCommand extends Command
@@ -48,13 +48,13 @@ class MakeCommand extends Command
     {
         $namespace = $this->argument('name');
 
-        if (!preg_match('/[A-Za-z0-9_\-]{2,}\/[A-Za-z0-9_\-]{2,}/', $namespace)) {
-            $this->error("The incorrect name must be the following pattern: user/package");
+        if (! preg_match('/[A-Za-z0-9_\-]{2,}\/[A-Za-z0-9_\-]{2,}/', $namespace)) {
+            $this->error('The incorrect name must be the following pattern: user/package');
 
             return 1;
         }
 
-        [$path, $name] = explode("/", $namespace);
+        [$path, $name] = explode('/', $namespace);
 
         if (is_dir(base_path("vendor/{$namespace}"))) {
             $this->error("The package [{$namespace}] is already exists!");
@@ -68,9 +68,9 @@ class MakeCommand extends Command
                 $base_dir.'/src',
             ] as $dir
         ) {
-            if (!is_dir($dir)) {
+            if (! is_dir($dir)) {
                 mkdir($dir, 0777, 1);
-                $this->info("Created dir [".str_replace(base_path(), '', realpath($dir))."]!");
+                $this->info('Created dir ['.str_replace(base_path(), '', realpath($dir)).']!');
             }
         }
 
@@ -86,15 +86,15 @@ class MakeCommand extends Command
                 $base_dir.'/src/ServiceProvider.php' => $this->get_stub('ServiceProvider'),
             ] as $file => $file_data
         ) {
-            if (!is_file($file)) {
+            if (! is_file($file)) {
                 file_put_contents($file, $file_data);
-                $this->info("Created file [".str_replace(base_path(), '', realpath($file))."]!");
+                $this->info('Created file ['.str_replace(base_path(), '', realpath($file)).']!');
             }
         }
 
-        $this->add_repo_to_composer(str_replace(base_path().'/', '', $base_dir) . '/');
+        $this->add_repo_to_composer(str_replace(base_path().'/', '', $base_dir).'/');
 
-        $this->line("");
+        $this->line('');
         $this->info("  For continue you can run: <comment>composer require {$path}/{$name}</comment>");
 
         return 0;
@@ -106,26 +106,25 @@ class MakeCommand extends Command
      */
     protected function get_stub(string $file): bool|string
     {
-        $data = file_get_contents(__DIR__ . "/Stubs/{$file}.stub");
+        $data = file_get_contents(__DIR__."/Stubs/{$file}.stub");
 
         $name = $this->argument('name');
 
-        list($folder, $extension) = explode("/", $name);
+        list($folder, $extension) = explode('/', $name);
 
         $namespace_option = $this->option('namespace');
 
         if ($namespace_option) {
+            $namespace_option = str_replace('/', '\\', $namespace_option);
 
-            $namespace_option = str_replace("/", "\\", $namespace_option);
-
-            $namespace_option = explode("\\", $namespace_option);
+            $namespace_option = explode('\\', $namespace_option);
         }
 
         $namespace = $this->makeNamespace($namespace_option ?: [$folder, $extension]);
 
         return str_replace([
             '{NAME}', '{DESCRIPTION}', '{FOLDER}', '{EXTENSION}', '{VERSION}',
-            '{COMPOSER_NAMESPACE}', '{NAMESPACE}', '{SLUG}', '{TYPE}', '{DATE}'
+            '{COMPOSER_NAMESPACE}', '{NAMESPACE}', '{SLUG}', '{TYPE}', '{DATE}',
         ], [
             $name,
             $this->option('description'),
@@ -134,9 +133,9 @@ class MakeCommand extends Command
             $this->option('version'),
             str_replace('\\', '\\\\', $namespace),
             $namespace,
-            \Str::slug(str_replace("/", "_", $name), '_'),
+            \Str::slug(str_replace('/', '_', $name), '_'),
             $this->option('type'),
-            now()->format('Y-m-d')
+            now()->format('Y-m-d'),
         ], $data);
     }
 
@@ -146,7 +145,7 @@ class MakeCommand extends Command
      */
     protected function makeNamespace(array $parts): string
     {
-        return implode("\\", array_map('ucfirst', array_map('Str::camel', $parts)));
+        return implode('\\', array_map('ucfirst', array_map('Str::camel', $parts)));
     }
 
     /**
@@ -157,16 +156,17 @@ class MakeCommand extends Command
     {
         $base_composer = json_decode(file_get_contents(base_path('composer.json')), 1);
 
-        if (!isset($base_composer['repositories'])) {
+        if (! isset($base_composer['repositories'])) {
             $base_composer['repositories'] = [];
         }
 
-        $path = trim($path, "/");
+        $path = trim($path, '/');
 
-        if (!collect($base_composer['repositories'])->where('url', $path)->first()) {
+        if (! collect($base_composer['repositories'])->where('url', $path)->first()) {
             $base_composer['repositories'][] = ['type' => 'path', 'url' => $path];
             file_put_contents(base_path('composer.json'), JsonFormatter::format(json_encode($base_composer), false, true));
             $this->info("Added [{$path}] repository to composer.json!");
+
             return true;
         }
 

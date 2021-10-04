@@ -5,7 +5,7 @@ namespace Bfg\Installer\Commands;
 use Illuminate\Console\Command;
 
 /**
- * Class PackagesCommand
+ * Class PackagesCommand.
  * @package Bfg\Installer\Commands
  */
 class PackagesCommand extends Command
@@ -45,52 +45,44 @@ class PackagesCommand extends Command
     public function handle()
     {
         $headers = [
-            "Index", "Name", "Description", "Version", "Installed", "Works"
+            'Index', 'Name', 'Description', 'Version', 'Installed', 'Works',
         ];
 
         if ($this->option('child')) {
-
-            $headers[] = "Child";
+            $headers[] = 'Child';
         }
 
         if ($this->option('type')) {
-
-            $headers[] = "Type";
+            $headers[] = 'Type';
         }
 
         if ($this->option('path')) {
-
-            $headers[] = "Provider path";
+            $headers[] = 'Provider path';
         }
 
         $this->table($headers, collect(\Installer::packages())->map(function ($i, $class) {
-
             $result = [
                 $i['index'],
                 $i['name'],
                 $i['description'],
-                "<info>".($i['version'] ?: $i['composer_version'])."</info>",
-                $i['install_complete'] ? "<info>Yes</info>":"<comment>No</comment>",
+                '<info>'.($i['version'] ?: $i['composer_version']).'</info>',
+                $i['install_complete'] ? '<info>Yes</info>' : '<comment>No</comment>',
                 $this->installedInformation($class, $i),
             ];
 
             if ($this->option('child')) {
-
                 $result[] = $i['child'];
             }
 
             if ($this->option('type')) {
-
                 $result[] = $i['type'];
             }
 
             if ($this->option('path')) {
-
                 $result[] = $i['path'];
             }
 
             return $result;
-
         })->toArray());
 
         return 0;
@@ -104,12 +96,12 @@ class PackagesCommand extends Command
     protected function installedInformation(string $class, array $extension): string
     {
         if (\Installer::isInstalledPackage($class)) {
-            return "<info>Yes</info>";
+            return '<info>Yes</info>';
         } else {
             if ($extension['installed']) {
-                return "Paused";
+                return 'Paused';
             } else {
-                return "<comment>No</comment>";
+                return '<comment>No</comment>';
             }
         }
     }

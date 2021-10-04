@@ -7,7 +7,7 @@ use Illuminate\Foundation\Console\PackageDiscoverCommand as IlluminatePackageDis
 use Illuminate\Foundation\PackageManifest;
 
 /**
- * Class PackageDiscoverCommand
+ * Class PackageDiscoverCommand.
  * @package Bfg\Installer\Commands
  */
 class PackageDiscoverCommand extends IlluminatePackageDiscoverCommand

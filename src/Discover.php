@@ -7,7 +7,7 @@ use Bfg\Installer\Providers\InstalledProvider;
 use Illuminate\Console\Command;
 
 /**
- * Class Discover
+ * Class Discover.
  * @package Bfg\Installer
  */
 class Discover
@@ -31,7 +31,7 @@ class Discover
                     $provider->dump(
                         app(DumpAutoloadProcessor::class, [
                             'command' => $command,
-                            'extension' => $package
+                            'extension' => $package,
                         ])
                     );
                 } catch (\Throwable $throwable) {

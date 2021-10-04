@@ -5,7 +5,7 @@ namespace Bfg\Installer;
 use Illuminate\Support\Facades\Facade as FacadeIlluminate;
 
 /**
- * Class Facade
+ * Class Facade.
  * @package Bfg\Installer
  */
 class Facade extends FacadeIlluminate
