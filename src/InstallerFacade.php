@@ -40,7 +40,7 @@ class InstallerFacade
         if ($this->packages === null) {
             $file = storage_path('packages.php');
             if (is_file($file)) {
-                $this->packages = include $file;
+                $this->packages = (array) include $file;
             } else {
                 $this->packages = [];
             }
