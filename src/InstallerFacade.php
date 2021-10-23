@@ -360,10 +360,14 @@ class InstallerFacade
      */
     public function dump(): bool
     {
-        return (bool) file_put_contents(
-            storage_path('packages.php'),
-            array_entity($this->packages)->wrap('php', 'return')->render()
-        );
+        if ($this->packages) {
+
+            return (bool) file_put_contents(
+                storage_path('packages.php'),
+                array_entity($this->packages)->wrap('php', 'return')->render()
+            );
+        }
+        return false;
     }
 
     /**
