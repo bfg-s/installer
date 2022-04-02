@@ -56,6 +56,9 @@ class ServiceProvider extends InstalledProvider
         $this->app->extend('command.package.discover', function () {
             return new PackageDiscoverCommand();
         });
+        $this->app->extend(\Illuminate\Foundation\Console\PackageDiscoverCommand::class, function () {
+            return new PackageDiscoverCommand();
+        });
     }
 
     /**
